@@ -14,7 +14,7 @@ class NewsFeedViewController: UIViewController {
     var items: [Item] = []
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var activityIndicatorView: UITableView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     
     
@@ -24,28 +24,28 @@ class NewsFeedViewController: UIViewController {
         activityIndicatorView.isHidden = true
        
     }
-    //MARK: -activityIndicatorView error
-// func activityIndicator(animated: Bool){
-     // DispatchQueue.main.async {
-        //    if animated{
-       //         self.activityIndicatorView.isHidden = false
-        //        self.activityIndicatorView.startAnimating()
-         //   }else{
-        //        self.activityIndicatorView.isHidden = true
-        //        self.activityIndicatorView.stopAnimating()
-        //   }
-       // }
-  //  }
-   // @IBAction func infoBarItem(_ sender: Any) {
-   //     basicAlert(title: "News Feed Info!", message: "Press plane to fetch Apple News Feed articles")
-   // }
-   // @IBAction func getDataTapped(_ sender: Any) {
-      //  self.activityIndicator(animated: true)
-     //   handleGetData()
-   // }
+   
+func activityIndicator(animated: Bool){
+      DispatchQueue.main.async {
+            if animated{
+            self.activityIndicatorView.isHidden = false
+               self.activityIndicatorView.startAnimating()
+           }else{
+               self.activityIndicatorView.isHidden = true
+              self.activityIndicatorView.stopAnimating()
+          }
+       }
+   }
+    @IBAction func infoBarItem(_ sender: Any) {
+       basicAlert(title: "News Feed Info!", message: "Press plane to fetch Apple News Feed articles")
+   }
+   @IBAction func getDataTapped(_ sender: Any) {
+       self.activityIndicator(animated: true)
+        handleGetData()
+   }
     
     func handleGetData(){
-    let jsonUrl = "https://newsapi.org/v2/everything?q=apple&from=2021-08-01&to=2021-08-08&sortBy=popularity&apiKey=1920b7f830414a5bb662b581372ff993"
+    let jsonUrl = "https://newsapi.org/v2/everything?q=apple&from=2021-08-01&to=2021-08-08&sortBy=popularity&apiKey=e239546822614422a0e141cb2d7161ce"
     
     guard let url = URL(string: jsonUrl) else {return}
        
