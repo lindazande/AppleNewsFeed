@@ -14,8 +14,11 @@ class NewsFeedViewController: UIViewController {
     var items: [Item] = []
     
     @IBOutlet weak var tableView: UITableView!
+ 
+   
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
+
     
     
     override func viewDidLoad() {
@@ -89,7 +92,7 @@ func activityIndicator(animated: Bool){
         
                  DispatchQueue.main.async {
                     self.tableView.reloadData()
-                   // self.activityIndicator(animated: false)
+                   self.activityIndicator(animated: false)
             }
         }
 }
@@ -103,6 +106,7 @@ extension NewsFeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "newsFeed", for: indexPath) as? NewsTableViewCell else {
             
         return UITableViewCell()
@@ -127,5 +131,19 @@ extension NewsFeedViewController: UITableViewDelegate, UITableViewDataSource{
         return 100
     }
 
-
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        guard let vc = storyboard.instantiateViewController(identifier: "DetailViewController") as? DetailViewController else {
+            return
+        }
+        let item = items[indexPath.row]
+        
+        vc.contentString = item.description
+        vc.titleString = item.title
+        vc.webURLString = item.url
+        vc.newsImage = item.image
+        
+        //present(vc, animanted: true, completion: nil)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
