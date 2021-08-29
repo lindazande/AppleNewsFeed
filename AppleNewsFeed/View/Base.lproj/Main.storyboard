@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LUo-2a-qFw">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <rect key="frame" x="0.0" y="86" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <activityIndicatorView key="tableFooterView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" id="5On-Dw-08Q">
                                     <rect key="frame" x="0.0" y="181.00000034679067" width="414" height="44"/>
@@ -75,8 +75,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="LUo-2a-qFw" secondAttribute="trailing" id="P7Z-Ca-foA"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="LUo-2a-qFw" secondAttribute="bottom" id="Tqq-lo-kde"/>
-                            <constraint firstItem="LUo-2a-qFw" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="fuK-jg-BNN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="LUo-2a-qFw" secondAttribute="bottom" constant="2" id="Tqq-lo-kde"/>
+                            <constraint firstItem="LUo-2a-qFw" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="-2" id="fuK-jg-BNN"/>
                             <constraint firstItem="LUo-2a-qFw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="jkZ-bN-9PB"/>
                         </constraints>
                     </view>
@@ -96,6 +96,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicatorView" destination="5On-Dw-08Q" id="QvW-3o-ls0"/>
+                        <outlet property="tableView" destination="LUo-2a-qFw" id="jUS-Ls-u21"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -344,7 +345,7 @@
                                 <action selector="infoButtonTapped:" destination="gcF-WD-QBQ" id="bKW-Hh-m7i"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="PKc-xE-jbb">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="PKc-xE-jbb">
                             <color key="tintColor" systemColor="labelColor"/>
                             <connections>
                                 <action selector="editButtonTapped:" destination="gcF-WD-QBQ" id="pia-jL-FNg"/>

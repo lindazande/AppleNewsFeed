@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        readFullArticleButton.layer.cornerRadius = 12
+        readFullArticleButton.layer.cornerRadius = 6
         readFullArticleButton.tintColor = .label
         self.title = "Article"
         
@@ -38,10 +38,11 @@ class DetailViewController: UIViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
     }
+    
     func saveData(){
         do{
             try context?.save()
-            basicAlert(title: "Saved!", message: "To see your saved article, go tp Saved tab bar")
+            basicAlert(title: "Saved!", message: "To see your saved article, go to Saved tab bar")
         }catch{
             print(error.localizedDescription)
         }

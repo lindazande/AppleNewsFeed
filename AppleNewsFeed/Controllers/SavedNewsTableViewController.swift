@@ -25,27 +25,28 @@ class SavedNewsTableViewController: UITableViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
         loadData()
+        countItems()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadData()
+        countItems()
         
     }
-    
     func saveData(){
         do{
             try context?.save()
-            basicAlert(title: "Saved!", message: "To see your saved article, go to aved tab bar")
+            basicAlert(title: "Deleted!", message: "Oops, you just ereased from CoreData your article.")
         }catch{
             print(error.localizedDescription)
         }
         loadData()
     }
+ 
      
     func loadData(){
-        
         let request: NSFetchRequest<Items> = Items.fetchRequest()
         do {
             savedItems = try (context?.fetch(request))!
@@ -53,19 +54,26 @@ class SavedNewsTableViewController: UITableViewController {
         }catch{
             fatalError("Error in retrieving Saved Items")
         }
+        tableView.reloadData()
     }
-        
-      
+    
+    func countItems() {
+        let itemsInTable = String(self.tableView.numberOfRows(inSection: 0))
+        self.title = "Saved(\(itemsInTable))"
+    }
+    
     @IBAction func infoButtonTapped(_ sender: Any) {
+        basicAlert(title: "Saved New Info!", message: "In this section you will find your saved articles. If you decide to delete aome articles, you can do it by using \"Edit\" button and click on delete symbol, or alternative way is to pointer on related articl and swipe from right side the left, then press \"delete\"!")
+}
+
 
     
-    //basic alerts
-}
-//MARK: -#warning("change the title of editButtonTitle")
-        //editButtonTapped
+
+//MARK: - change title for Edit
+       
     @IBAction func editButtonTapped(_ sender: Any) {
-    tableView.isEditing = !tableView.isEditing
-        if tableView.isEditing {
+        tableView.isEditing = !tableView.isEditing
+        if tableView.isEditing{
             editButtonTitle.title = "Save"
         }else{
             editButtonTitle.title = "Edit"
@@ -92,33 +100,25 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
     if let image = UIImage(data: item.image!){
         cell.newsImageView.image = image
     }
- return cell
-    }
+    return cell
+    
+}
 
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-        
+  //MARK: -Open WbKit
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       // let cell = tableView.dequeueReusableCell(withIdentifier: "WebViewController", for: indexPath)
-        
-       // func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //   let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-         //   guard let vc = storyboard.instantiateViewController(identifier: "WebViewController") as? DetailViewController else {
-             //   return
-           // }
-         //   let item = items[indexPath.row]
-            
-         //   vc.contentString = item.description
-         //   vc.titleString = item.title
-         //   vc.webURLString = item.url
-         //   vc.newsImage = item.image
-            
-            //present(vc, animanted: true, completion: nil)
-        //    navigationController?.pushViewController(vc, animated: true)
-       // }
 
+         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+         guard let vc = storyboard.instantiateViewController(identifier: "WebViewController") as? WebViewController else {
+                return
+            }
+        self.title = "Saved"
+        vc.urlString = savedItems[indexPath.row].url ?? "https://blog.thomasnet.com/hs-fs/hubfs/shutterstock_774749455.jpg?width=1200&name=shutterstock_774749455.jpg"
+        navigationController?.pushViewController(vc, animated: true)
        
     }
     //MARK: -#warning(".delete")
@@ -129,41 +129,19 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            let item = savedItems[indexPath.row]
-            self.context?.delete(item)
-            
-            let alertController = UIAlertController(title: "Delete", message: "Are you sure you want to delete this Item?", preferredStyle: .alert)
-          alertController.addTextField { textField in
-            print(textField)
-           }
-           let addActionButton = UIAlertAction(title: "Yes", style: .default) { alertAction in
-                
-              let textField = alertController.textFields?.first
-               let entity = NSEntityDescription.entity(forEntityName: "Grocery", in: self.manageObjectContext!)
-             //   let grocery = NSManagedObject(entity: entity!, insertInto: self.manageObjectContext)
-                
-              //  grocery.setValue(textField?.text, forKey: "item")
-             //   self.saveData()
-
-                //  self.groceries.append(textField!.text!)
-                //self.tableView.reloadData()
-                
-          //  }//add action
-         //   let cancelButton = UIAlertAction(title: "cancel", style: .destructive, handler: nil)
-            
-          //  alertController.addAction(addActionButton)
-          //  alertController.addAction(cancelButton)
-           //  present(alertController, animated: true, completion: nil)
-     //   }
+            let alert = UIAlertController(title: "Delete", message: "Ae you sure you want to delete?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {_ in
+                let item = self.savedItems[indexPath.row]
+                self.context?.delete(item)
+                self.saveData()
+            }))
+            self.present(alert, animated: true)
         }
     }
-           // tableView.deleteRows(at: [indexPath], with: .fade)
-      //  } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-      
-    
+            
 
-    
+
     //Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         let row = savedItems.remove(at: fromIndexPath.row)
@@ -178,15 +156,5 @@ override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexP
         return true
     }
 
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

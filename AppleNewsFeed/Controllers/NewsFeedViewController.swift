@@ -12,10 +12,12 @@ import Gloss
 class NewsFeedViewController: UIViewController {
 
     var items: [Item] = []
+    var searchResult = "apple"
     
-    @IBOutlet weak var tableView: UITableView!
+  
  
-   
+    @IBOutlet weak var tableView: UITableView!
+    
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
 
@@ -25,17 +27,18 @@ class NewsFeedViewController: UIViewController {
         super.viewDidLoad()
         self.title = "Apple News"
         activityIndicatorView.isHidden = true
+        handleGetData()
        
     }
    
 func activityIndicator(animated: Bool){
       DispatchQueue.main.async {
-            if animated{
+        if animated{
             self.activityIndicatorView.isHidden = false
-               self.activityIndicatorView.startAnimating()
-           }else{
-               self.activityIndicatorView.isHidden = true
-              self.activityIndicatorView.stopAnimating()
+            self.activityIndicatorView.startAnimating()
+        }else{
+            self.activityIndicatorView.isHidden = true
+            self.activityIndicatorView.stopAnimating()
           }
        }
    }
@@ -43,11 +46,11 @@ func activityIndicator(animated: Bool){
        basicAlert(title: "News Feed Info!", message: "Press plane to fetch Apple News Feed articles")
    }
    @IBAction func getDataTapped(_ sender: Any) {
-       self.activityIndicator(animated: true)
-        handleGetData()
+    handleGetData()
    }
     
     func handleGetData(){
+        self.activityIndicator(animated: true)
     let jsonUrl = "https://newsapi.org/v2/everything?q=apple&from=2021-08-01&to=2021-08-08&sortBy=popularity&apiKey=e239546822614422a0e141cb2d7161ce"
     
     guard let url = URL(string: jsonUrl) else {return}
@@ -70,7 +73,6 @@ func activityIndicator(animated: Bool){
             }
             
             do{
-                
                 if let dictData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]{
                     print("dictData:", dictData)
                     self.populateData(dictData)
@@ -83,16 +85,16 @@ func activityIndicator(animated: Bool){
     }
     
     func populateData(_ dict: [String: Any]){
-        guard let responseDict = dict["article"] as? [Gloss.JSON] else {
+        guard let responseDict = dict["articles"] as? [Gloss.JSON] else {
             return
             
             }
         
         items = [Item].from(jsonArray: responseDict) ?? []
         
-                 DispatchQueue.main.async {
+        DispatchQueue.main.async {
                     self.tableView.reloadData()
-                   self.activityIndicator(animated: false)
+                    self.activityIndicator(animated: false)
             }
         }
 }
@@ -108,8 +110,7 @@ extension NewsFeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "newsFeed", for: indexPath) as? NewsTableViewCell else {
-            
-        return UITableViewCell()
+            return UITableViewCell()
     }
         
     let item = items[indexPath.row]
@@ -137,7 +138,6 @@ extension NewsFeedViewController: UITableViewDelegate, UITableViewDataSource{
             return
         }
         let item = items[indexPath.row]
-        
         vc.contentString = item.description
         vc.titleString = item.title
         vc.webURLString = item.url
