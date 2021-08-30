@@ -142,7 +142,7 @@
                                                     <constraint firstAttribute="height" constant="197" id="5ON-Mf-TGk"/>
                                                     <constraint firstAttribute="width" constant="252" id="997-oQ-jV9"/>
                                                 </constraints>
-                                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -345,6 +345,10 @@
                                         <constraint firstItem="RT2-sJ-avN" firstAttribute="centerY" secondItem="5XB-uW-n99" secondAttribute="centerY" id="QrA-Yx-dpV"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="newsImageView" destination="xDJ-ap-gPA" id="9ST-1W-f9R"/>
+                                    <outlet property="newsTitleLabel" destination="jw9-9P-j4S" id="oNM-6c-iTB"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
